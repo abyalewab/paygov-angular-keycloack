@@ -297,7 +297,7 @@ dependencies {
     implementation 'com.sun.xml.bind:jaxb-impl:3.0.2'
     implementation("org.springframework.ws:spring-ws-core")
     implementation(files(genJaxb.classesDir).builtBy(genJaxb))
-    jaxb 'com.sun.xml.bind:jaxb-xjc:3.0.1'
+    jaxb 'com.sun.xml.bind:jaxb-xjc:3.0.2'
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
     implementation("wsdl4j:wsdl4j:1.6.3")
     implementation 'org.json:json:20211205'
@@ -308,7 +308,7 @@ dependencies {
 
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.apache.kafka:kafka-clients:3.1.0'
-    implementation 'org.apache.kafka:kafka-streams:2.8.0'
+    implementation 'org.apache.kafka:kafka-streams:3.1.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.webjars:webjars-locator-core'

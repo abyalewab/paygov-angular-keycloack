@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import javax.annotation.Nonnull;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,6 +26,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * Claim converter to add custom claims by retrieving the user from the userinfo endpoint.
  */
+
 public class CustomClaimConverter implements Converter<Map<String, Object>, Map<String, Object>> {
 
     private final BearerTokenResolver bearerTokenResolver = new DefaultBearerTokenResolver();
@@ -37,15 +39,21 @@ public class CustomClaimConverter implements Converter<Map<String, Object>, Map<
 
     private final Map<String, ObjectNode> users = new HashMap<>();
 
+    String roleStr = "role";
+    String groups = "groups";
+    String familyName = "family_name";
+    String givenName = "given_name";
+
     public CustomClaimConverter(ClientRegistration registration, RestTemplate restTemplate) {
         this.registration = registration;
         this.restTemplate = restTemplate;
     }
 
-    public Map<String, Object> convert(Map<String, Object> claims) {
+    public Map<String, Object> convert(@Nonnull Map<String, Object> claims) {
         Map<String, Object> convertedClaims = this.delegate.convert(claims);
         if (RequestContextHolder.getRequestAttributes() != null) {
             // Retrieve and set the token
+
             String token = bearerTokenResolver.resolve(
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()
             );
@@ -70,26 +78,27 @@ public class CustomClaimConverter implements Converter<Map<String, Object>, Map<
             if (user != null) {
                 convertedClaims.put("preferred_username", user.get("preferred_username").asText());
                 if (user.has("given_name")) {
-                    convertedClaims.put("given_name", user.get("given_name").asText());
+                    convertedClaims.put(this.givenName, user.get(this.givenName).asText());
                 }
-                if (user.has("family_name")) {
-                    convertedClaims.put("family_name", user.get("family_name").asText());
+                if (user.has(this.familyName)) {
+                    convertedClaims.put(this.familyName, user.get(this.familyName).asText());
                 }
-                if (user.has("groups")) {
+                if (user.has(this.groups)) {
                     List<String> groups = StreamSupport
-                        .stream(user.get("groups").spliterator(), false)
+                        .stream(user.get(this.groups).spliterator(), false)
                         .map(JsonNode::asText)
                         .collect(Collectors.toList());
-                    convertedClaims.put("groups", groups);
+                    convertedClaims.put(this.groups, groups);
                 }
             }
 
-            if (user.has(SecurityUtils.CLAIMS_NAMESPACE + "roles")) {
+            assert user != null;
+            if (user.has(SecurityUtils.CLAIMS_NAMESPACE + this.roleStr)) {
                 List<String> roles = StreamSupport
-                    .stream(user.get(SecurityUtils.CLAIMS_NAMESPACE + "roles").spliterator(), false)
+                    .stream(user.get(SecurityUtils.CLAIMS_NAMESPACE + this.roleStr).spliterator(), false)
                     .map(JsonNode::asText)
                     .collect(Collectors.toList());
-                convertedClaims.put("roles", roles);
+                convertedClaims.put(this.roleStr, roles);
             }
         }
         return convertedClaims;
