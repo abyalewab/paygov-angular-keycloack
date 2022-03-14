@@ -54,9 +54,11 @@ public class CustomClaimConverter implements Converter<Map<String, Object>, Map<
         if (RequestContextHolder.getRequestAttributes() != null) {
             // Retrieve and set the token
 
+            assert RequestContextHolder.getRequestAttributes() != null;
             String token = bearerTokenResolver.resolve(
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()
             );
+
             HttpHeaders headers = new HttpHeaders();
             headers.set("Authorization", buildBearer(token));
 
@@ -93,6 +95,7 @@ public class CustomClaimConverter implements Converter<Map<String, Object>, Map<
             }
 
             assert user != null;
+
             if (user.has(SecurityUtils.CLAIMS_NAMESPACE + this.roleStr)) {
                 List<String> roles = StreamSupport
                     .stream(user.get(SecurityUtils.CLAIMS_NAMESPACE + this.roleStr).spliterator(), false)
