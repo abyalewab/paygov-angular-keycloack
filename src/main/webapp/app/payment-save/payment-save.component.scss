@@ -1,15 +1,16 @@
 #border {
   border-style: solid;
   border-width: 3px 3px 3px 3px;
-  margin-left: 350px;
-  margin-right: 350px;
-  margin-bottom: 50px;
+  margin-left: 250px;
+  margin-right: 250px;
+  margin-bottom: 0px;
 
   text-align: center;
+  background-color: #acedfb;
 }
 
 #save {
-  font-family: sans-Serif;
+  font-family: Georgia;
 }
 
 #successModal {
@@ -23,9 +24,35 @@
 }
 
 .btn {
-  font-family: sans-serif;
+  font-family: Sans-serif;
+  background-color: #b79bd2;
 }
 
 #hd {
   text-align: center;
+  font-family: Comic Sans MS;
+}
+
+.hdg {
+  background-color: #dbcb78;
+  border-style: solid;
+  border-width: 0px 0px 1px 0px;
+  font-family: Georgia;
+}
+
+.mod {
+  border: 2px solid black;
+  margin-left: 250px;
+  margin-right: 250px;
+  background-color: white;
+}
+
+.hd {
+  background-color: #dbcb78;
+  border-style: solid;
+  border-width: 0px 0px 1px 0px;
+}
+
+.hdd {
+  margin-left: -250px;
 }
