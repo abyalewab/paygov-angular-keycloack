@@ -86,11 +86,11 @@ public class CustomClaimConverter implements Converter<Map<String, Object>, Map<
                     convertedClaims.put(this.familyName, user.get(this.familyName).asText());
                 }
                 if (user.has(this.groups)) {
-                    List<String> groups = StreamSupport
+                    List<String> group_list = StreamSupport
                         .stream(user.get(this.groups).spliterator(), false)
                         .map(JsonNode::asText)
                         .collect(Collectors.toList());
-                    convertedClaims.put(this.groups, groups);
+                    convertedClaims.put(this.groups, group_list);
                 }
             }
 
