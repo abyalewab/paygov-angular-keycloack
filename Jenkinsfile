@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Compile') {
             steps {
-                bat "./gradlew clean build"
+                bat "./gradlew"
             }
         }
         stage('Building project image') {
