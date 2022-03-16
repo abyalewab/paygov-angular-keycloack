@@ -1,57 +1,44 @@
-#!/usr/bin/env groovy
-
-node {
-    stage('checkout') {
-        checkout scm
+pipeline {
+    environment {
+        registry = "abyalewab"
+        registryCredential = 'dockerhub_id'
+        dockerImage = 'paygov_k'
     }
-
-    docker.image('jhipster/jhipster:v7.3.1').inside('-u jhipster -e GRADLE_USER_HOME=.gradle') {
-        stage('check java') {
-            sh "java -version"
-        }
-
-        stage('clean') {
-            sh "chmod +x gradlew"
-            sh "./gradlew clean --no-daemon"
-        }
-        stage('nohttp') {
-            sh "./gradlew checkstyleNohttp --no-daemon"
-        }
-
-        stage('npm install') {
-            sh "./gradlew npm_install -PnodeInstall --no-daemon"
-        }
-        stage('backend tests') {
-            try {
-                sh "./gradlew test integrationTest -PnodeInstall --no-daemon"
-            } catch(err) {
-                throw err
-            } finally {
-                junit '**/build/**/TEST-*.xml'
+    agent any
+    triggers {
+       pollSCM('*/5 * * * *')
+    }
+    stages {
+        stage('Cloning our Git') {
+            steps {
+             git 'https://github.com/abyalewab/paygov-angular-keycloack.git'
             }
         }
-
-        stage('frontend tests') {
-            try {
-                sh "./gradlew npm_run_test -PnodeInstall --no-daemon"
-            } catch(err) {
-                throw err
-            } finally {
-                junit '**/build/test-results/TESTS-*.xml'
+        stage('Compile') {
+            steps {
+                gradlew('clean', 'classes')
             }
         }
-
-        stage('packaging') {
-            sh "./gradlew bootJar -x test -Pprod -PnodeInstall --no-daemon"
-            archiveArtifacts artifacts: '**/build/libs/*.jar', fingerprint: true
+        stage('Building our image') {
+            steps{
+                script {
+                 dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
+            }
         }
-
-    }
-
-    def dockerImage
-    stage('publish docker') {
-        // A pre-requisite to this step is to setup authentication to the docker registry
-        // https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin#authentication-methods
-        sh "./gradlew bootJar jib -Pprod -PnodeInstall --no-daemon"
+        stage('Deploy our image') {
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                    dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Cleaning up') {
+            steps{
+            sh "docker rmi $registry:$BUILD_NUMBER"
+            }
+        }
     }
 }

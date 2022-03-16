@@ -20,6 +20,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=AByalewAB
+      - POSTGRES_DB=paygov
       - POSTGRES_HOST_AUTH_METHOD=trust
 
   keycloak:

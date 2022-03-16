@@ -51,10 +51,9 @@ public class CustomClaimConverter implements Converter<Map<String, Object>, Map<
 
     public Map<String, Object> convert(@Nonnull Map<String, Object> claims) {
         Map<String, Object> convertedClaims = this.delegate.convert(claims);
+
         if (RequestContextHolder.getRequestAttributes() != null) {
             // Retrieve and set the token
-
-            assert RequestContextHolder.getRequestAttributes() != null;
             String token = bearerTokenResolver.resolve(
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()
             );
@@ -86,11 +85,11 @@ public class CustomClaimConverter implements Converter<Map<String, Object>, Map<
                     convertedClaims.put(this.familyName, user.get(this.familyName).asText());
                 }
                 if (user.has(this.groups)) {
-                    List<String> group_list = StreamSupport
+                    List<String> groupList = StreamSupport
                         .stream(user.get(this.groups).spliterator(), false)
                         .map(JsonNode::asText)
                         .collect(Collectors.toList());
-                    convertedClaims.put(this.groups, group_list);
+                    convertedClaims.put(this.groups, groupList);
                 }
             }
 

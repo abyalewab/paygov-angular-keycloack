@@ -36,7 +36,7 @@
       "enabled": true,
       "totp": false,
       "emailVerified": true,
-      "firstName": "",
+      "firstName": "User",
       "lastName": "User",
       "email": "user@localhost",
       "credentials": [
@@ -51,6 +51,31 @@
       "disableableCredentialTypes": [],
       "requiredActions": [],
       "realmRoles": ["offline_access", "uma_authorization"],
+      "clientRoles": {
+        "account": ["view-profile", "manage-account"]
+      },
+      "notBefore": 0,
+      "groups": ["/Users"]
+    },
+    {
+      "id": "0ebdd112-a672-4336-85dc-b550ec92bd4f",
+      "username": "paygov",
+      "enabled": true,
+      "totp": false,
+      "emailVerified": false,
+      "firstName": "Paygov",
+      "lastName": "Paygov",
+      "email": "abyalewab@gmail.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "paygov",
+          "credentialData": "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
+        }
+      ],
+      "disableableCredentialTypes": [],
+      "requiredActions": ["CONFIGURE_TOTP" , "VERIFY_EMAIL"],
+      "realmRoles": ["offline_access", "uma_authorization" ,"ROLE_PAYGOV"],
       "clientRoles": {
         "account": ["view-profile", "manage-account"]
       },
