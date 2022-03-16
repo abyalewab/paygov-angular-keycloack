@@ -2,42 +2,42 @@ pipeline {
     environment {
         registry = "abyalewab"
         registryCredential = 'dockerhub_id'
-        dockerImage = 'paygov_k'
+        dockerImage = ''
     }
     agent any
     triggers {
        pollSCM('*/5 * * * *')
     }
     stages {
-        stage('Cloning our Git') {
+        stage('Cloning Git') {
             steps {
              git 'https://github.com/abyalewab/paygov-angular-keycloack.git'
             }
         }
         stage('Compile') {
             steps {
-                gradlew('clean', 'classes')
+                bat "./gradlew clean build"
             }
         }
-        stage('Building our image') {
+        stage('Building project image') {
             steps{
                 script {
-                 dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                   dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
         }
-        stage('Deploy our image') {
+        stage('Deploy project image') {
             steps{
                 script {
                     docker.withRegistry( '', registryCredential ) {
-                    dockerImage.push()
+                       dockerImage.push()
                     }
                 }
             }
         }
         stage('Cleaning up') {
             steps{
-            bat "docker rmi $registry:$BUILD_NUMBER"
+               bat "docker rmi $registry:$BUILD_NUMBER"
             }
         }
     }
