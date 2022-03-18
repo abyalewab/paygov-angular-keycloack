@@ -1,5 +1,5 @@
 # ===================================================================
-# Spring Boot configuration for the "prod" profile.
+# Spring Boot configuration for the "uat" profile.
 #
 # This configuration overrides the application.yml file.
 #
@@ -43,7 +43,7 @@ spring:
     database-platform: tech.jhipster.domain.util.FixedPostgreSQL10Dialect
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
-    contexts: prod
+    contexts: uat
   thymeleaf:
     cache: true
   sleuth:
@@ -57,7 +57,7 @@ spring:
         enabled: true
 
 # ===================================================================
-# To enable TLS in production, generate a certificate using:
+# To enable TLS in uat, generate a certificate using:
 # keytool -genkey -alias paygov_k -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
 #
 # You can also use Let's Encrypt:

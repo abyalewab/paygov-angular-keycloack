@@ -47,7 +47,7 @@ task webapp(type: NpmTask) {
 
     dependsOn npmInstall
 
-    args = ["run", "webapp:build"]
+    args = ["run", "webapp:build:dev"]
     environment = [APP_VERSION: project.version]
 }
 

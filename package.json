@@ -53,7 +53,7 @@
     "prettier:check": "prettier --check \"{,src/**/,webpack/}*.{md,json,yml,html,cjs,mjs,js,ts,tsx,css,scss,java}\"",
     "prettier:format": "prettier --write \"{,src/**/,webpack/}*.{md,json,yml,html,cjs,mjs,js,ts,tsx,css,scss,java}\"",
     "serve": "npm run start --",
-    "start": "ng serve --hmr",
+    "start": "ng serve --configuration",
     "start-tls": "npm run webapp:dev-ssl",
     "pretest": "npm run lint",
     "test": "ng test --coverage --log-heap-usage -w=2",
@@ -62,11 +62,13 @@
     "webapp:build": "npm run clean-www && npm run webapp:build:dev",
     "webapp:build:dev": "ng build --configuration development",
     "webapp:build:prod": "ng build --configuration production",
+    "webapp:build:uat": "ng build --configuration userAcceptanceTesting",
     "webapp:dev": "ng serve",
     "webapp:dev-ssl": "ng serve --ssl",
     "webapp:dev-verbose": "ng serve --verbose",
     "webapp:prod": "npm run clean-www && npm run webapp:build:prod",
-    "webapp:test": "npm run test --"
+    "webapp:test": "npm run test --",
+    "webapp:uat": "npm run clean-www && npm run webapp:build:uat"
   },
   "config": {
     "backend_port": "8080",
@@ -111,6 +113,7 @@
     "browser-sync-webpack-plugin": "2.3.0",
     "concurrently": "6.3.0",
     "copy-webpack-plugin": "9.0.1",
+    "css-minimizer-webpack-plugin": "^3.4.1",
     "eslint": "7.32.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-webpack-plugin": "3.0.1",

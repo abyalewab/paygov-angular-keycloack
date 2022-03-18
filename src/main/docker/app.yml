@@ -7,8 +7,8 @@ services:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,api-docs
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://paygov_k-postgresql:5432/paygov
-      - SPRING_LIQUIBASE_URL=jdbc:postgresql://paygov_k-postgresql:5432/paygov
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://paygov_k-postgresql:5432/keycloak
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://paygov_k-postgresql:5432/keycloak
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=http://keycloak:9080/auth/realms/jhipster
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=web_app
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=web_app
@@ -24,7 +24,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=AByalewAB
-      - POSTGRES_DB=paygov
+      - POSTGRES_DB=keycloak
       - POSTGRES_HOST_AUTH_METHOD=trust
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
@@ -44,8 +44,7 @@ services:
         '-Dkeycloak.profile.feature.upload_scripts=enabled',
       ]
     volumes:
-      - ./realm-config:/opt/jboss/keycloak/realm-config
-      -
+      - './realm-config:/opt/jboss/keycloak/realm-config'
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
@@ -56,3 +55,28 @@ services:
       - 127.0.0.1:9080:9080
       - 127.0.0.1:9443:9443
       - 127.0.0.1:10990:10990
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.7
+    ports:
+      - '2181:2181'
+    volumes:
+      - 'zookeeper_data:/bitnami'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka:
+    image: docker.io/bitnami/kafka:3
+    ports:
+      - '9092:9092'
+    volumes:
+      - 'kafka_data:/bitnami'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local

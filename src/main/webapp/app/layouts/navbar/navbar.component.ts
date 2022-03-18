@@ -6,6 +6,7 @@ import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'jhi-navbar',
@@ -18,6 +19,8 @@ export class NavbarComponent implements OnInit {
   openAPIEnabled?: boolean;
   version = '';
   account: Account | null = null;
+
+  profile = environment.profileName;
 
   constructor(
     private loginService: LoginService,

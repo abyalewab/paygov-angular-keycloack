@@ -13,9 +13,10 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
-logging:
-  file:
-    name: D:/JHproject/ELK/elkLogFile.log
+
+#logging:
+#  file:
+#    name: D:/JHproject/ELK/elkLogFile.log
 
 management:
   endpoints:
