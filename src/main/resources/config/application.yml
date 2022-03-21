@@ -76,8 +76,8 @@ spring:
     cccValidatorAPI: https://mockbin.org/bin/a47733d9-1f31-4f84-97cc-17bf32f00809
     cikValidatorAPI: https://mockbin.org/bin/2422df5b-c77c-49c4-b1ad-6c479e94ff89
     paypalUrl: https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=
-    returnUrl: http://localhost:9000/payment-save
-    cancelUrl: http://localhost:9000
+    returnUrl: http://localhost:8080/payment-save
+    cancelUrl: http://localhost:8080
     bootstrap-servers: localhost:9092
     consumer-group: user
   profiles:
